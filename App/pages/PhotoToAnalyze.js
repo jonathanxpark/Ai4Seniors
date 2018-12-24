@@ -14,22 +14,22 @@ class PhotoToAnalyze extends Component {
    constructor(props) {
     super(props)
     this.state = {
-        nuts: false,
-        wheat: false,
-        milk: false,
-        egg: false,
-        fish: false,
-        soy: false,
-        shellfish: false,
-        photo: null,
+      nuts: false,
+      peanut: false,
+      wheat: false,
+      milk: false,
+      egg: false,
+      soy: false,
+      caffeine: false,
+      photo: null,
     }  
     if (props.navigation && props.navigation.state && props.navigation.state.params) {
       this.state.nuts = props.navigation.state.params.nuts;
+      this.state.peanut = props.navigation.state.params.peanut;
       this.state.wheat = props.navigation.state.params.wheat;
       this.state.milk = props.navigation.state.params.milk;
       this.state.egg = props.navigation.state.params.egg;
-      this.state.fish = props.navigation.state.params.fish;
-      this.state.shellfish = props.navigation.state.params.shellfish;
+      this.state.caffeine = props.navigation.state.params.caffeine;
       this.state.soy = props.navigation.state.params.soy;
     }    
     // console.log("** Photo: nuts: " + this.state.nuts, 
@@ -51,8 +51,8 @@ class PhotoToAnalyze extends Component {
            { homeKey: this.props.navigation.state.key,
             nuts: this.state.nuts, egg: this.state.egg, 
             wheat: this.state.wheat, soy: this.state.soy,
-            fish: this.state.fish, shellfish: this.state.shellfish,
-            milk: this.state.milk,
+            fish: this.state.fish, peanut: this.state.peanut,
+            milk: this.state.milk, caffeine: this.state.caffeine
            }, data))
       })
       .catch(err => console.error(err));

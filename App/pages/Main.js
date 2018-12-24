@@ -29,9 +29,12 @@ class Main extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      nuts: false,
+      peanut: false,
       wheat: false,
-      sugar: false,
-      salt: false,
+      milk: false,
+      egg: false,
+      soy: false,
       caffeine: false,
       action: '',
     }  
@@ -40,10 +43,13 @@ class Main extends Component {
     Tts.addEventListener('tts-cancel', (event) => console.log("cancel", event));
 
     if (props.navigation && props.navigation.state && props.navigation.state.params) {
+      this.state.nuts = props.navigation.state.params.nuts;
+      this.state.peanut = props.navigation.state.params.peanut;
       this.state.wheat = props.navigation.state.params.wheat;
-      this.state.sugar = props.navigation.state.params.sugar;
-      this.state.salt = props.navigation.state.params.salt;
+      this.state.milk = props.navigation.state.params.milk;
+      this.state.egg = props.navigation.state.params.egg;
       this.state.caffeine = props.navigation.state.params.caffeine;
+      this.state.soy = props.navigation.state.params.soy;
     } 
       
     Tts.setDefaultLanguage('en-US')
@@ -61,8 +67,10 @@ class Main extends Component {
     Tts.speak('Please take a photo of the food to analyze.')
     const { navigate } = this.props.navigation 
     navigate('PhotoToAnalyze', 
-      { wheat: this.state.wheat, salt: this.state.salt, 
-        caffeine: this.state.caffeine, sugar: this.state.sugar})
+      { nuts: this.state.nuts, egg: this.state.egg, 
+        wheat: this.state.wheat, soy: this.state.soy,
+        fish: this.state.fish, peanut: this.state.peanut,
+        milk: this.state.milk, caffeine: this.state.caffeine})
   }
 
   handleReading = () => {
@@ -75,8 +83,10 @@ class Main extends Component {
     console.log("settingss")
     const { navigate } = this.props.navigation 
     navigate('Settings', 
-      { nuts: this.state.nuts, salt: this.state.salt, 
-        caffeine: this.state.caffeine, sugar: this.state.sugar})
+      { nuts: this.state.nuts, egg: this.state.egg, 
+        wheat: this.state.wheat, soy: this.state.soy,
+        fish: this.state.fish, peanut: this.state.peanut,
+        milk: this.state.milk, caffeine: this.state.caffeine})
   }
 
   transformResult(result) {

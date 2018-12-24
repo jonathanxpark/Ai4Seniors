@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Button from '../components/Button';
-import { Text, Image, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, Image, View, StyleSheet, TouchableOpacity, ScrollView, Dimensions} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Header from '../components/Header';
 import { SafeAreaView } from 'react-navigation';
@@ -22,20 +22,20 @@ class Settings extends Component {
         super(props)
         this.state = {
             nuts: false,
+            peanut: false,
             wheat: false,
             milk: false,
             egg: false,
-            fish: false,
             soy: false,
-            shellfish: false,
+            caffeine: false,
         }  
         if (props.navigation && props.navigation.state && props.navigation.state.params) {
             this.state.nuts = props.navigation.state.params.nuts;
+            this.state.peanut = props.navigation.state.params.peanut;
             this.state.wheat = props.navigation.state.params.wheat;
             this.state.milk = props.navigation.state.params.milk;
             this.state.egg = props.navigation.state.params.egg;
-            this.state.fish = props.navigation.state.params.fish;
-            this.state.shellfish = props.navigation.state.params.shellfish;
+            this.state.caffeine = props.navigation.state.params.caffeine;
             this.state.soy = props.navigation.state.params.soy;
         }    
         // console.log("** Main: nuts: " + this.state.nuts, 
@@ -51,7 +51,10 @@ class Settings extends Component {
         // for(const [key, value] of Object.entries(Utterances)) {
         //     r = r.replace(key, value)
         // }
-        if (r.indexOf('nuts') !== -1 || r.indexOf(' nut') !== -1) {
+        if (r.indexOf('peanut') !== -1 || r.indexOf('peanuts') !== -1) {
+            this.setState({ peanut : true });
+        } 
+        if (r.indexOf('tree nut') !== -1) {
             this.setState({ nuts : true });
         } 
          if (r.indexOf('wheat') !== -1) {
@@ -66,8 +69,8 @@ class Settings extends Component {
         if (r.indexOf('egg') !== -1) {
             this.setState({ egg : true });
         }
-        if (r.indexOf('shellfish') !== -1) {
-            this.setState({ shellfish : true });
+        if (r.indexOf('caffeine') !== -1) {
+            this.setState({ caffeine : true });
         } else if (r.indexOf('fish') !== -1) {
             this.setState({ fish : true });
         }
@@ -83,8 +86,8 @@ class Settings extends Component {
         navigate('Main', 
                 { nuts: this.state.nuts, egg: this.state.egg, 
                   wheat: this.state.wheat, soy: this.state.soy,
-                  fish: this.state.fish, shellfish: this.state.shellfish,
-                  milk: this.state.milk,
+                  fish: this.state.fish, peanut: this.state.peanut,
+                  milk: this.state.milk, caffeine: this.state.caffeine,
                 })
     }
 
@@ -96,42 +99,54 @@ class Settings extends Component {
                 title='Select ingredients'
                 mode='home'
                 //onPress={() => this.props.navigation.goBack(null)}
-                style={{marginBottom :  10}}/> 
-          <CheckBox title='Egg' size={40}
+                style={{marginBottom :  50}}/> 
+        <ScrollView>
+        <View style={styles.checkboxContainer}>
+            {/* <CheckBox title='Caffeine' size={40}
+                checked={this.state.caffeine}
+                textStyle={styles.text}
+                containerStyle={styles.checkbox}
+                onPress={() => { this.setState({ egg : !this.state.caffeine }) }} />
+  */}
+            <CheckBox title='Egg' size={40}
                 checked={this.state.egg}
                 textStyle={styles.text}
                 containerStyle={styles.checkbox}
                 onPress={() => { this.setState({ egg : !this.state.egg }) }} />
-            <CheckBox title='Fish' size={40}
-                checked={this.state.fish}
-                textStyle={styles.text}
-                containerStyle={styles.checkbox}
-                onPress={() => { this.setState({ fish : !this.state.fish }) }} />                       
-           <CheckBox title='Milk' size={40}
+          <CheckBox title='Milk' size={40}
                 checked={this.state.milk}
                 textStyle={styles.text}
                 containerStyle={styles.checkbox}
                 onPress={() => { this.setState({ milk : !this.state.milk }) }} />   
-            <CheckBox title='Nuts' size={40}
-                checked={this.state.nuts}
+            <CheckBox title='Peanut' size={40}
+                checked={this.state.peanut}
                 textStyle={styles.text}
                 containerStyle={styles.checkbox}
-                onPress={() => { this.setState({ nuts : !this.state.nuts }) }} />            
-            <CheckBox title='Shellfish' size={40}
+                onPress={() => { this.setState({ peanut : !this.state.peanut }) }} />
+    
+            {/* <CheckBox title='Shellfish' size={40}
                 checked={this.state.shellfish}
                 textStyle={styles.text}
                 containerStyle={styles.checkbox}
-                onPress={() => { this.setState({ shellfish : !this.state.shellfish }) }} />    
+                onPress={() => { this.setState({ shellfish : !this.state.shellfish }) }} />     */}
             <CheckBox title='Soy' size={40}
                 checked={this.state.soy}
                 textStyle={styles.text}
                 containerStyle={styles.checkbox}
                 onPress={() => { this.setState({ soy : !this.state.soy }) }} />   
+             <CheckBox title='Tree Nuts' size={40}
+                checked={this.state.nuts}
+                textStyle={styles.text}
+                containerStyle={styles.checkbox}
+                onPress={() => { this.setState({ nuts : !this.state.nuts }) }} />
+             
             <CheckBox title='Wheat' size={40}
                 checked={this.state.wheat}
                 textStyle={styles.text}
                 containerStyle={styles.checkbox}
-                onPress={() => { this.setState({ wheat : !this.state.wheat }) }} />            
+                onPress={() => { this.setState({ wheat : !this.state.wheat }) }} />   
+            </View>   
+            </ScrollView>       
                     
             <View style={styles.content}>
                 <RecordSpeech style={styles.recordButton}
@@ -139,7 +154,7 @@ class Settings extends Component {
                 onResult = {result => {}}
                 transformResult = {this.transformResult}
                 />   
-            </View>                 
+            </View>               
             {/* <FooterButtonUpdate disable={false} onPress={this.handleUpdate}/>                                    */}
             <View style={ styles.bottomBar }>
                 <TouchableOpacity style={ [styles.goBackBtn, styles.Btn] } onPress={ () => goBack() }>
@@ -183,8 +198,15 @@ const styles = StyleSheet.create ({
         //color: "#ffffff"
         backgroundColor : 'white',
       },
+      checkboxContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'center',
+      },
     checkbox: {
         backgroundColor : 'white',
+        width: (Dimensions.get('window').width/2) - 25,
     },
     text : {
         fontSize: 24,

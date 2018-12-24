@@ -33,6 +33,15 @@ sugar_regexp = [/(sugar|sugars)\s+([1-9]\d*)\s*(mg|g|%)/i, /:\ssugars?/i,  /suga
 no_salt_regexp = [] 
 salt_regexp = [/sodium\s+\(?([1-9]\d*)\s*(mg|g|%)/i, /low sodium/i, /(and|,)?\s*salt(,|.)/i];
 
+no_nuts_regexp = [ /nut(\s|-)free/i ];
+nuts_regexp = [/(\s|,)(hazelnut|almond|cashew|chestnut|pecan|walnut|macadamia|brazil nut)s?(,|\.|\s|$)/i, ];
+no_peanut_regexp = [ /peanut(\s|-)free/i ];
+peanut_regexp = [/(\s|,)(peanut)s?(,|\.|\s|$)/i, ];
+no_milk_regexp = [ /milk(\s|-)free/i ];
+milk_regexp = [/(\s|,)(milk|whey)s?(,|\.|\s|$)/i, ];
+no_soy_regexp = []
+soy_regexp = [/(\s|,)(soy)s?(,|\.|\s|$)/i, ]
+
 export default class LabelDetection extends Component {
 constructor(props) {
   super(props)
@@ -45,33 +54,42 @@ constructor(props) {
     detectedLang: '',
     imgPath: props.navigation.state.params.path, 
     read: false,
+    nuts: false,
+    peanut: false,
     wheat: false,
-    sugar: false,
-    salt: false,
+    milk: false,
+    egg: false,
+    soy: false,
     caffeine: false,
     ingredients: '',
   }
 
   if (props.navigation && props.navigation.state && props.navigation.state.params) {
+    this.state.nuts = props.navigation.state.params.nuts;
+    this.state.peanut = props.navigation.state.params.peanut;
     this.state.wheat = props.navigation.state.params.wheat;
-    this.state.sugar = props.navigation.state.params.sugar;
-    this.state.salt = props.navigation.state.params.salt;
+    this.state.milk = props.navigation.state.params.milk;
+    this.state.egg = props.navigation.state.params.egg;
     this.state.caffeine = props.navigation.state.params.caffeine;
+    this.state.soy = props.navigation.state.params.soy;
     // get the list of ingreient user chose in the setting.
     ingredients = []
     if (this.state.caffeine) ingredients.push('caffeine')
     if (this.state.wheat) ingredients.push('wheat')
-    if (this.state.salt) ingredients.push('salt')
-    if (this.state.sugar) ingredients.push('sugar')
+    if (this.state.milk) ingredients.push('milk')
+    if (this.state.nuts) ingredients.push('nuts')
+    if (this.state.peanut) ingredients.push('peanut')
+    if (this.state.egg) ingredients.push('egg')
+    if (this.state.soy) ingredients.push('soy')
     this.state.ingredients = this.getText(ingredients)
 
     console.log(ingredients)
     console.log(this.state.ingredients)
   } 
 
-  console.log("** LabelDetection: wheat: " + this.state.wheat, 
-  ", sugar: " + this.state.sugar + ", salt:" + this.state.salt +
-  ", caffeine:" + this.state.caffeine + ", ingredients:" + this.state.ingredients);  
+  // console.log("** LabelDetection: wheat: " + this.state.wheat, 
+  // ", sugar: " + this.state.sugar + ", salt:" + this.state.salt +
+  // ", caffeine:" + this.state.caffeine + ", ingredients:" + this.state.ingredients);  
 }
 
 getText(texts) {
@@ -203,11 +221,16 @@ analyze = (text) => {
   if (this.state.wheat && this.findMatch(text, no_wheat_regexp, wheat_regexp)) {
     output.push('wheat')
   }
-  if (this.state.sugar && this.findMatch(text, no_sugar_regexp, sugar_regexp)) {
-    output.push('sugar')
+  if (this.state.peanut && this.findMatch(text, no_peanut_regexp, peanut_regexp)) {
+    output.push('peanut')
+  } else if (this.state.nuts && this.findMatch(text, no_nuts_regexp, nuts_regexp)) {
+    output.push('nuts')
   }
-  if (this.state.salt && this.findMatch(text, no_salt_regexp, salt_regexp)) {
-    output.push('salt')
+  if (this.state.milk && this.findMatch(text, no_milk_regexp, milk_regexp)) {
+    output.push('milk')
+  }
+  if (this.state.soy && this.findMatch(text, no_soy_regexp, soyregexp)) {
+    output.push('soy')
   }
   if (this.state.caffeine && this.findMatch(text, no_caffeine_regexp, caffeine_regexp)) {
     output.push('caffeine')

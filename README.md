@@ -35,9 +35,15 @@ After detecting allergens, ReSight highlights the allergens on the screen and ve
 Instead of bringing reading glasses and spending time identifying allergens, 
 seniors can now use ReSight, which automatically detects and notifies them of any predefined restricted ingredients.
 
+The model utilizes the YOLO CNN model as a baseline https://github.com/qqwweee/keras-yolo3 
+
 The structure of the application below:
 
 <img width="559" alt="Screen Shot 2021-10-11 at 12 15 23 AM" src="https://user-images.githubusercontent.com/21136258/136733059-7f30fe7e-bcd5-427b-a309-623e5f8e6837.png">
+
+Identifying allergens:
+
+<img width="755" alt="Screen Shot 2021-10-11 at 6 08 25 PM" src="https://user-images.githubusercontent.com/21136258/136861342-c360e562-f7dd-4a53-a63e-52cd18fc1bef.png">
 
 Live demo:
 
@@ -48,6 +54,9 @@ https://user-images.githubusercontent.com/21136258/136733138-5d31d315-d219-4430-
 The CNN model was compared with two baselines: Tesseract, one of the most accurate open-source optical character recognition (OCR) systems 
 and Google Vision API, an industry-leading OCR system. 
 Experimental results demonstrate that the CNN model performed significantly better than Tesseract and performed as well as Google Vision API. 
+
+<img width="644" alt="Screen Shot 2021-10-11 at 6 01 47 PM" src="https://user-images.githubusercontent.com/21136258/136860996-cb4a8f55-9400-481f-9e85-3c7022a9cebd.png">
+
 
 Compatibility:
 Compatible on both IOS and Android.
